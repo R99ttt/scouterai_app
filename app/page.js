@@ -1,113 +1,425 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export default function Home() {
+import { Bird, Rabbit, Turtle } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+// import { Textarea } from "@/components/ui/textarea";
+
+export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className="relative flex-col items-center gap-8 md:flex">
+      <form className="grid items-start gap-6" action="/players">
+        <input type="hidden" value="0" name="page_id" />
+        <fieldset className="grid gap-6 content-center rounded-lg border p-4">
+          <legend className="-ml-1 px-1 text-2xl font-bold">
+            Advanced Search
+          </legend>
+          <div className="grid gap-3">
+            <Label htmlFor="position">Position</Label>
+            <Select name="player_club_position">
+              <SelectTrigger
+                id="position"
+                className="items-start [&_[data-description]]:hidden"
+              >
+                <SelectValue placeholder="Select a position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItems />
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="playerName">Player Name</Label>
+            <Input
+              name="player_name"
+              id="playerName"
+              type="text"
+              placeholder="rashford..."
             />
-          </a>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-3">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                name="player_age"
+                id="age"
+                type="number"
+                placeholder="18"
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="clubName">Club Name</Label>
+              <Input
+                name="player_club_name"
+                id="clubName"
+                type="text"
+                placeholder="Manchester united..."
+              />
+            </div>
+          </div>
+          <CardFooter>
+            <Button className="w-1/2 m-auto">Go!</Button>
+          </CardFooter>
+        </fieldset>
+        {/* <fieldset className="grid gap-6 rounded-lg border p-4">
+          <legend className="-ml-1 px-1 text-sm font-medium">Messages</legend>
+          <div className="grid gap-3">
+            <Label htmlFor="role">Role</Label>
+            <Select defaultValue="system">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="user">User</SelectItem>
+                <SelectItem value="assistant">Assistant</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="content">Content</Label>
+            <Textarea
+              id="content"
+              placeholder="You are a..."
+              className="min-h-[9.5rem]"
+            />
+          </div>
+        </fieldset> */}
+      </form>
+    </div>
+  );
+}
+
+function SelectItems() {
+  return (
+    <>
+      <SelectItem value="ls">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">ls</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Striker
+            </p>
+          </div>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </SelectItem>
+      <SelectItem value="st">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">st</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Striker
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lw">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lw</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Winger
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lf">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lf</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Forward
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="cf">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">cf</span>
+            </p>
+            <p className="text-xs" data-description>
+              Center Forward
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rf">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rf</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Forward
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rw">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rw</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Winger
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lam">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lam</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Attacking Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="cam">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">cam</span>
+            </p>
+            <p className="text-xs" data-description>
+              Center Attacking Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="ram">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">ram</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Attacking Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lcm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lcm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Center Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="cm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">cm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Center Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rcm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rcm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Center Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lwb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lwb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Wing Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="ldm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">ldm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Defensive Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="cdm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">cdm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Center Defensive Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rdm">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rdm</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Defensive Midfielder
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rwb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rwb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Wing Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="lcb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">lcb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Left Center Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="cb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">cb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Center Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rcb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rcb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Center Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="rb">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">rb</span>
+            </p>
+            <p className="text-xs" data-description>
+              Right Back
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+      <SelectItem value="gk">
+        <div className="flex items-start gap-3 text-muted-foreground">
+          <div className="grid gap-0.5">
+            <p>
+              <span className="font-medium text-foreground">gk</span>
+            </p>
+            <p className="text-xs" data-description>
+              Goalkeeper
+            </p>
+          </div>
+        </div>
+      </SelectItem>
+    </>
   );
 }

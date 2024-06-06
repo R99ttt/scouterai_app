@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model players {
+  id                Int                @id @default(autoincrement())
+  player_id         Int?
+  player_url        String?            @db.VarChar(255)
+  short_name        String?            @db.VarChar(100)
+  long_name         String?            @db.VarChar(255)
+  dob               DateTime?          @db.Date
+  nationality_id    Int?
+  real_face         Boolean?
+  player_face_url   String?            @db.VarChar(255)
+  player_iterations playerIterations[]
+  nationality       nation?            @relation(fields: [nationality_id], references: [id], onDelete: Cascade)
+
+  @@index([nationality_id], map: "players_nationality_id_fkey")
+}
+
+model temp {
+  id                             Int       @id @default(autoincrement())
+  player_id                      Int?
+  player_url                     String?   @db.VarChar(255)
+  fifa_version                   String?   @db.VarChar(10)
+  fifa_update                    String?   @db.VarChar(10)
+  fifa_update_date               DateTime? @db.Date
+  short_name                     String?   @db.VarChar(100)
+  long_name                      String?   @db.VarChar(255)
+  player_positions               String?   @db.VarChar(255)
+  overall                        Int?
+  potential                      Int?
+  value_eur                      Int?
+  wage_eur                       Int?
+  age                            Int?
+  dob                            DateTime? @db.Date
+  height_cm                      Int?
+  weight_kg                      Int?
+  league_id                      Int?
+  league_name                    String?   @db.VarChar(100)
+  league_level                   Int?
+  club_team_id                   Int?
+  club_name                      String?   @db.VarChar(100)
+  club_position                  String?   @db.VarChar(50)
+  club_jersey_number             Int?
+  club_loaned_from               String?   @db.VarChar(100)
+  club_joined_date               DateTime? @db.Date
+  club_contract_valid_until_year Int?
+  nationality_id                 Int?
+  nationality_name               String?   @db.VarChar(100)
+  nation_team_id                 Int?
+  nation_position                String?   @db.VarChar(50)
+  nation_jersey_number           Int?
+  preferred_foot                 String?   @db.VarChar(10)
+  weak_foot                      Int?
+  skill_moves                    Int?
+  international_reputation       Int?
+  work_rate                      String?   @db.VarChar(50)
+  body_type                      String?   @db.VarChar(50)
+  real_face                      Boolean?
+  release_clause_eur             Int?
+  player_tags                    String?   @db.VarChar(255)
+  player_traits                  String?   @db.VarChar(255)
+  pace                           Int?
+  shooting                       Int?
+  passing                        Int?
+  dribbling                      Int?
+  defending                      Int?
+  physic                         Int?
+  attacking_crossing             Int?
+  attacking_finishing            Int?
+  attacking_heading_accuracy     Int?
+  attacking_short_passing        Int?
+  attacking_volleys              Int?
+  skill_dribbling                Int?
+  skill_curve                    Int?
+  skill_fk_accuracy              Int?
+  skill_long_passing             Int?
+  skill_ball_control             Int?
+  movement_acceleration          Int?
+  movement_sprint_speed          Int?
+  movement_agility               Int?
+  movement_reactions             Int?
+  movement_balance               Int?
+  power_shot_power               Int?
+  power_jumping                  Int?
+  power_stamina                  Int?
+  power_strength                 Int?
+  power_long_shots               Int?
+  mentality_aggression           Int?
+  mentality_interceptions        Int?
+  mentality_positioning          Int?
+  mentality_vision               Int?
+  mentality_penalties            Int?
+  mentality_composure            Int?
+  defending_marking_awareness    Int?
+  defending_standing_tackle      Int?
+  defending_sliding_tackle       Int?
+  goalkeeping_diving             Int?
+  goalkeeping_handling           Int?
+  goalkeeping_kicking            Int?
+  goalkeeping_positioning        Int?
+  goalkeeping_reflexes           Int?
+  goalkeeping_speed              Int?
+  ls                             String?   @db.VarChar(10)
+  st                             String?   @db.VarChar(10)
+  rs                             String?   @db.VarChar(10)
+  lw                             String?   @db.VarChar(10)
+  lf                             String?   @db.VarChar(10)
+  cf                             String?   @db.VarChar(10)
+  rf                             String?   @db.VarChar(10)
+  rw                             String?   @db.VarChar(10)
+  lam                            String?   @db.VarChar(10)
+  cam                            String?   @db.VarChar(10)
+  ram                            String?   @db.VarChar(10)
+  lm                             String?   @db.VarChar(10)
+  lcm                            String?   @db.VarChar(10)
+  cm                             String?   @db.VarChar(10)
+  rcm                            String?   @db.VarChar(10)
+  rm                             String?   @db.VarChar(10)
+  lwb                            String?   @db.VarChar(10)
+  ldm                            String?   @db.VarChar(10)
+  cdm                            String?   @db.VarChar(10)
+  rdm                            String?   @db.VarChar(10)
+  rwb                            String?   @db.VarChar(10)
+  lb                             String?   @db.VarChar(10)
+  lcb                            String?   @db.VarChar(10)
+  cb                             String?   @db.VarChar(10)
+  rcb                            String?   @db.VarChar(10)
+  rb                             String?   @db.VarChar(10)
+  gk                             String?   @db.VarChar(10)
+  player_face_url                String?   @db.VarChar(255)
+}
+
+model playerIterations {
+  player_id                      Int
+  id                             Int               @id @default(autoincrement())
+  fifa_version                   String?           @db.VarChar(10)
+  temp_id                        Int
+  fifa_update                    String?           @db.VarChar(10)
+  fifa_update_date               DateTime?         @db.Date
+  player_positions               String?           @db.VarChar(255)
+  nation_position                String?           @db.VarChar(50)
+  nation_jersey_number           Int?
+  international_reputation       Int?
+  club_id                        Int
+  club_position                  String?           @db.VarChar(50)
+  club_jersey_number             Int?
+  club_loaned_from               String?           @db.VarChar(100)
+  club_joined_date               DateTime?         @db.Date
+  club_contract_valid_until_year Int?
+  release_clause_eur             Int?
+  value_eur                      Int?
+  wage_eur                       Int?
+  player_attributes              playerAttributes?
+  club                           club              @relation(fields: [club_id], references: [id], onDelete: Cascade)
+  player                         players           @relation(fields: [player_id], references: [id], onDelete: Cascade)
+  player_ratings                 playerRatings?
+
+  @@index([club_id], map: "playerIterations_club_id_fkey")
+  @@index([player_id], map: "playerIterations_player_id_fkey")
+}
+
+model playerAttributes {
+  id                  Int              @id @default(autoincrement())
+  player_iteration_id Int              @unique(map: "player_iteration_id")
+  work_rate           String?          @db.VarChar(50)
+  body_type           String?          @db.VarChar(50)
+  height_cm           Int?
+  weight_kg           Int?
+  player_tags         String?          @db.VarChar(255)
+  player_traits       String?          @db.VarChar(255)
+  preferred_foot      String?          @db.VarChar(10)
+  weak_foot           Int?
+  skill_moves         Int?
+  age                 Int?
+  player_iteration    playerIterations @relation(fields: [player_iteration_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model continent {
+  id      Int      @id @default(autoincrement())
+  name    String?  @db.VarChar(100)
+  nations nation[]
+}
+
+model nation {
+  id           Int       @id @default(autoincrement())
+  name         String?   @db.VarChar(100)
+  continent_id Int
+  leagues      league[]
+  continent    continent @relation(fields: [continent_id], references: [id], onDelete: Cascade)
+  players      players[]
+
+  @@index([continent_id], map: "nation_continent_id_fkey")
+}
+
+model league {
+  id        Int     @id @default(autoincrement())
+  name      String? @db.VarChar(100)
+  nation_id Int
+  level     Int
+  clubs     club[]
+  nations   nation  @relation(fields: [nation_id], references: [id], onDelete: Cascade)
+
+  @@index([nation_id], map: "league_nation_id_fkey")
+}
+
+model club {
+  id        Int                @id @default(autoincrement())
+  name      String?            @db.VarChar(100)
+  league_id Int
+  league    league             @relation(fields: [league_id], references: [id], onDelete: Cascade)
+  players   playerIterations[]
+
+  @@index([league_id], map: "club_league_id_fkey")
+}
+
+model playerRatings {
+  id                          Int              @id @default(autoincrement())
+  player_iteration_id         Int              @unique(map: "player_iteration_id")
+  overall                     Int?
+  potential                   Int?
+  pace                        Int?
+  shooting                    Int?
+  passing                     Int?
+  dribbling                   Int?
+  defending                   Int?
+  physic                      Int?
+  attacking_crossing          Int?
+  attacking_finishing         Int?
+  attacking_heading_accuracy  Int?
+  attacking_short_passing     Int?
+  attacking_volleys           Int?
+  skill_dribbling             Int?
+  skill_curve                 Int?
+  skill_fk_accuracy           Int?
+  skill_long_passing          Int?
+  skill_ball_control          Int?
+  movement_acceleration       Int?
+  movement_sprint_speed       Int?
+  movement_agility            Int?
+  movement_reactions          Int?
+  movement_balance            Int?
+  power_shot_power            Int?
+  power_jumping               Int?
+  power_stamina               Int?
+  power_strength              Int?
+  power_long_shots            Int?
+  mentality_aggression        Int?
+  mentality_interceptions     Int?
+  mentality_positioning       Int?
+  mentality_vision            Int?
+  mentality_penalties         Int?
+  mentality_composure         Int?
+  defending_marking_awareness Int?
+  defending_standing_tackle   Int?
+  defending_sliding_tackle    Int?
+  goalkeeping_diving          Int?
+  goalkeeping_handling        Int?
+  goalkeeping_kicking         Int?
+  goalkeeping_positioning     Int?
+  goalkeeping_reflexes        Int?
+  goalkeeping_speed           Int?
+  ls                          String?          @db.VarChar(10)
+  st                          String?          @db.VarChar(10)
+  rs                          String?          @db.VarChar(10)
+  lw                          String?          @db.VarChar(10)
+  lf                          String?          @db.VarChar(10)
+  cf                          String?          @db.VarChar(10)
+  rf                          String?          @db.VarChar(10)
+  rw                          String?          @db.VarChar(10)
+  lam                         String?          @db.VarChar(10)
+  cam                         String?          @db.VarChar(10)
+  ram                         String?          @db.VarChar(10)
+  lm                          String?          @db.VarChar(10)
+  lcm                         String?          @db.VarChar(10)
+  cm                          String?          @db.VarChar(10)
+  rcm                         String?          @db.VarChar(10)
+  rm                          String?          @db.VarChar(10)
+  lwb                         String?          @db.VarChar(10)
+  ldm                         String?          @db.VarChar(10)
+  cdm                         String?          @db.VarChar(10)
+  rdm                         String?          @db.VarChar(10)
+  rwb                         String?          @db.VarChar(10)
+  lb                          String?          @db.VarChar(10)
+  lcb                         String?          @db.VarChar(10)
+  cb                          String?          @db.VarChar(10)
+  rcb                         String?          @db.VarChar(10)
+  rb                          String?          @db.VarChar(10)
+  gk                          String?          @db.VarChar(10)
+  player_iteration            playerIterations @relation(fields: [player_iteration_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}

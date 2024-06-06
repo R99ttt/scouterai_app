@@ -3,5 +3,8 @@
     "paths": {
       "@/*": ["./*"]
     }
+  },
+  "images": {
+    "domains": ["cdn.sofifa.net"]
   }
 }
