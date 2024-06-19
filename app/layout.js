@@ -11,6 +11,7 @@ import {
   Menu,
   LineChart,
   Search,
+  User,
   Users,
 } from "lucide-react";
 
@@ -103,7 +104,7 @@ export default function RootLayout({ children, params }) {
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Products
+                Players
               </Link>
               <Link
                 href="#"
@@ -121,16 +122,21 @@ export default function RootLayout({ children, params }) {
           </SheetContent>
         </Sheet> */}
             <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+              <Link href={"/players"} className="w-full flex justify-center">
+                <div className="rounded-full border-2 p-1 md:hidden">
+                  <User />
+                </div>
+              </Link>
+              <Link href={"/"} className="w-full flex justify-center">
+                <div className="rounded-full border-2 p-1 md:hidden">
+                  <Search />
+                </div>
+              </Link>
               <form
                 className="ml-auto flex-1 sm:flex-initial"
                 action="/players"
               >
                 <input type="hidden" value="0" name="page_id" />
-                <Link href={"/"} className="w-full flex justify-center">
-                  <div className="rounded-full border-2 p-1 md:hidden">
-                    <Search />
-                  </div>
-                </Link>
                 <div className="relative hidden md:block">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input

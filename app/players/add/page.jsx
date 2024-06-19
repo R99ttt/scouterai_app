@@ -23,7 +23,7 @@ import {
 export default function Page() {
   return (
     <div className="relative flex-col items-center gap-8 md:flex">
-      <form className="grid items-start gap-6" action="/players">
+      <form className="grid items-start gap-6" method="get" action="/">
         <input type="hidden" value="0" name="page_id" />
         <fieldset className="grid gap-6 content-center rounded-lg border p-4">
           <legend className="-ml-1 px-1 text-2xl font-bold">Add Player</legend>
@@ -80,7 +80,7 @@ export default function Page() {
               placeholder="e.g., Rashford..."
             />
           </div>
-
+          {/* 
           <div className="grid gap-3">
             <Label htmlFor="fifaVersion">FIFA Version</Label>
             <Input
@@ -104,7 +104,7 @@ export default function Page() {
           <div className="grid gap-3">
             <Label htmlFor="fifaUpdateDate">FIFA Update Date</Label>
             <Input name="fifa_update_date" id="fifaUpdateDate" type="date" />
-          </div>
+          </div> */}
 
           <div className="grid gap-3">
             <Label htmlFor="nationPosition">Nation Position</Label>
@@ -224,7 +224,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="grid gap-3">
+          {/* <div className="grid gap-3">
             <Label htmlFor="potential">Potential</Label>
             <Input
               name="potential"
@@ -232,7 +232,7 @@ export default function Page() {
               type="number"
               placeholder="e.g., 90"
             />
-          </div>
+          </div> */}
 
           <div className="grid gap-3">
             <Label htmlFor="pace">Pace</Label>
@@ -244,7 +244,7 @@ export default function Page() {
             <Input name="dob" id="dob" type="date" />
           </div>
 
-          <div className="grid gap-3">
+          {/* <div className="grid gap-3">
             <Label htmlFor="realFace">Real Face</Label>
             <Input name="real_face" id="realFace" type="checkbox" />
           </div>
@@ -257,7 +257,7 @@ export default function Page() {
               type="text"
               placeholder="e.g., https://example.com/player-face.jpg"
             />
-          </div>
+          </div> */}
 
           <div className="grid gap-3">
             <Label htmlFor="work_rate">Work Rate</Label>
@@ -421,26 +421,6 @@ export default function Page() {
                 {/* You'll populate these options dynamically based on the selected league */}
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="grid gap-3">
-            <Label htmlFor="overall">Overall Rating</Label>
-            <Input
-              name="overall"
-              id="overall"
-              type="number"
-              placeholder="Enter overall rating..."
-            />
-          </div>
-
-          <div className="grid gap-3">
-            <Label htmlFor="potential">Potential Rating</Label>
-            <Input
-              name="potential"
-              id="potential"
-              type="number"
-              placeholder="Enter potential rating..."
-            />
           </div>
 
           <div className="grid gap-3">

@@ -15,7 +15,7 @@ export default function TableRowClient(player) {
     >
       <TableCell className="hidden sm:table-cell">
         <Image
-          alt="Product image"
+          alt="player image"
           className="aspect-square rounded-md object-cover"
           height="64"
           src={player.player_face_url}
@@ -25,8 +25,15 @@ export default function TableRowClient(player) {
       <TableCell className="font-medium">{player?.short_name}</TableCell>
       <TableCell>
         <Badge variant="outline">
-          Hot
-          <Flame className="h-3 w-3" />
+          {player?.player_iterations[0]?.player_attributes?.age < 25 &&
+          player?.player_iterations[0]?.player_ratings.potential > 80 ? (
+            <>
+              Hot
+              <Flame className="h-3 w-3" />
+            </>
+          ) : (
+            "Moderate"
+          )}
         </Badge>
       </TableCell>
       <TableCell className="hidden md:table-cell">

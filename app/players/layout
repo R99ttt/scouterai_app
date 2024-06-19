@@ -82,7 +82,7 @@ export default function Layout({ children }) {
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Products
+                Players
               </Link>
               <Link
                 href="#"

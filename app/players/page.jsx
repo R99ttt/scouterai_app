@@ -63,7 +63,9 @@ async function getPlayers(
           short_name: true,
           player_iterations: {
             orderBy: {
-              id: "desc", // Assuming you want the latest iteration
+              player_attributes: {
+                age: "desc",
+              },
             },
             select: {
               player_attributes: {
@@ -71,6 +73,7 @@ async function getPlayers(
                   age: true,
                 },
               },
+              player_ratings: { select: { potential: true } },
               club_position: true,
               club: {
                 select: {
@@ -131,7 +134,10 @@ export default async function Page({
           </div>
           <Button size="sm" variant="outline" className="h-8 gap-1">
             {/* <Truck className="h-3.5 w-3.5" /> */}
-            <Link href={"/players/add"} className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+            <Link
+              href={"/players/add"}
+              className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+            >
               Add Player
             </Link>
           </Button>

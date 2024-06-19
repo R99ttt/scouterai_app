@@ -28,7 +28,9 @@ async function getPlayer(playerId) {
     include: {
       player_iterations: {
         orderBy: {
-          id: "desc", // Assuming you want the latest iteration
+          player_attributes: {
+            age: "desc",
+          },
         },
         take: 1,
         include: {
