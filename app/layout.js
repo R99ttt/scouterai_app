@@ -1,34 +1,10 @@
 import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
 import Link from "next/link";
-import prisma from "@/lib/prisma";
-import {
-  Activity,
-  ArrowUpRight,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  LineChart,
-  Search,
-  User,
-  Users,
-} from "lucide-react";
+import { LineChart, Search, User } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-
-import { headers } from "next/headers";
-
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/lib/utils";
 
 const fontSans = FontSans({
   subsets: ["latin"],

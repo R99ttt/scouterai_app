@@ -10,7 +10,7 @@ export default function TableRowClient(player) {
   const router = useRouter();
   return (
     <TableRow
-      onClick={() => router.push("/players/" + player.id)}
+      onClick={() => router.push("/players/" + player?.id)}
       className="hover:cursor-pointer"
     >
       <TableCell className="hidden sm:table-cell">
@@ -18,15 +18,21 @@ export default function TableRowClient(player) {
           alt="player image"
           className="aspect-square rounded-md object-cover"
           height="64"
-          src={player.player_face_url}
+          src={
+            player?.player_face_url
+              ? player.player_face_url
+              : "/player_placeholder.jpeg"
+          }
           width="64"
         />
       </TableCell>
-      <TableCell className="font-medium">{player?.short_name}</TableCell>
+      <TableCell className="font-medium">
+        {player?.short_name || player?.long_name}
+      </TableCell>
       <TableCell>
         <Badge variant="outline">
           {player?.player_iterations[0]?.player_attributes?.age < 25 &&
-          player?.player_iterations[0]?.player_ratings.potential > 80 ? (
+          player?.player_iterations[0]?.player_ratings?.potential > 80 ? (
             <>
               Hot
               <Flame className="h-3 w-3" />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import prisma from "@/lib/prisma";
+import prisma from "@/app/lib/prisma";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,8 +19,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
+import { getSessionDetails } from "@/app/lib/session";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical } from "lucide-react";
+import TrackPlayerButton from "./TrackPlayerButton";
 
-async function getPlayer(playerId) {
+async function getPlayer(playerId, userId) {
   return await prisma.players.findUnique({
     where: {
       id: parseInt(playerId), // The specific player ID you are looking for
@@ -43,13 +53,25 @@ async function getPlayer(playerId) {
           player_ratings: true,
         },
       },
-      nationality: true, // Include nationality details
+      nationality: true,
+      users: userId
+        ? {
+            where: {
+              userId: parseInt(userId),
+            },
+            select: {
+              userId: true,
+            },
+          }
+        : undefined,
     },
   });
 }
 
 export default async function Page({ params: { player_id } }) {
-  const player = await getPlayer(player_id);
+  const sessionDetails = await getSessionDetails();
+
+  const player = await getPlayer(player_id, sessionDetails?.userId);
 
   return (
     <>
@@ -59,13 +81,13 @@ export default async function Page({ params: { player_id } }) {
             <CardTitle className="text-sm font-medium">
               <Avatar className="h-24 w-24">
                 <AvatarImage src={player?.player_face_url} alt="@face" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>PP</AvatarFallback>
               </Avatar>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {player?.short_name},{" "}
+              {player?.short_name || player?.long_name},{" "}
               {player.player_iterations[0]?.player_attributes.age}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -79,11 +101,35 @@ export default async function Page({ params: { player_id } }) {
             {/* <Users className="h-4 w-4 text-muted-foreground" /> */}
           </CardHeader>
           <CardContent>
+            <p className="text-xs text-muted-foreground">Machine overall</p>
             <div className="text-2xl font-bold">
-              {player.player_iterations[0]?.player_ratings.overall}
+              {player.player_iterations[0]?.player_ratings.model_overall}
             </div>
+            {player.player_iterations[0]?.player_ratings.overall && (
+              <p className="text-xs text-muted-foreground">
+                FIFA overall -{" "}
+                {player.player_iterations[0]?.player_ratings.overall}
+              </p>
+            )}
             <p className="text-xs text-muted-foreground">
-              potential {player.player_iterations[0]?.player_ratings.potential}
+              Machine potential -{" "}
+              <span
+                className={
+                  "font-bold " +
+                  (player.player_iterations[0]?.player_ratings
+                    .model_potential == "Great"
+                    ? "text-green-600"
+                    : player.player_iterations[0]?.player_ratings
+                        .model_potential == "Good"
+                    ? "text-lime-300"
+                    : player.player_iterations[0]?.player_ratings
+                        .model_potential == "Medium"
+                    ? "text-yellow-400"
+                    : "text-orange-500")
+                }
+              >
+                {player.player_iterations[0]?.player_ratings.model_potential}
+              </span>
             </p>
           </CardContent>
         </Card>
@@ -146,7 +192,7 @@ export default async function Page({ params: { player_id } }) {
                     <Badge className="text-xs" variant="outline">
                       {
                         player.player_iterations[0]?.player_ratings
-                          .attacking_crossing
+                          ?.attacking_crossing
                       }
                     </Badge>
                     crossing
@@ -155,7 +201,7 @@ export default async function Page({ params: { player_id } }) {
                     <Badge className="text-xs" variant="outline">
                       {
                         player.player_iterations[0]?.player_ratings
-                          .skill_dribbling
+                          ?.skill_dribbling
                       }
                     </Badge>
                     Dribbling
@@ -164,7 +210,7 @@ export default async function Page({ params: { player_id } }) {
                     <Badge className="text-xs" variant="outline">
                       {
                         player.player_iterations[0]?.player_ratings
-                          .movement_acceleration
+                          ?.movement_acceleration
                       }
                     </Badge>
                     Acceleration
@@ -173,7 +219,7 @@ export default async function Page({ params: { player_id } }) {
                     <Badge className="text-xs" variant="outline">
                       {
                         player.player_iterations[0]?.player_ratings
-                          .power_shot_power
+                          ?.power_shot_power
                       }
                     </Badge>
                     Shot power
@@ -184,7 +230,7 @@ export default async function Page({ params: { player_id } }) {
                     <Badge className="text-xs" variant="outline">
                       {
                         player.player_iterations[0]?.player_ratings
-                          .attacking_finishing
+                          ?.attacking_finishing
                       }
                     </Badge>
                     Finishing
@@ -271,30 +317,38 @@ export default async function Page({ params: { player_id } }) {
                 </Button>
               </CardTitle>
               <CardDescription>
-                {player.player_iterations[0]?.player_attributes.player_tags}
+                {player.player_iterations[0]?.player_attributes?.player_tags}
               </CardDescription>
             </div>
             <div className="ml-auto flex items-center gap-1">
-              <Button size="sm" variant="outline" className="h-8 gap-1">
-                {/* <Truck className="h-3.5 w-3.5" /> */}
-                <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                  Track Player
-                </span>
-              </Button>
-              {/* <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="outline" className="h-8 w-8">
-                    <MoreVertical className="h-3.5 w-3.5" />
-                    <span className="sr-only">More</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Export</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Trash</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu> */}
+              {sessionDetails?.userId ? (
+                <TrackPlayerButton
+                  playerId={player?.id}
+                  isFollowing={player?.users?.length > 0}
+                />
+              ) : (
+                <Button size="sm" variant="outline" className="h-8 gap-1">
+                  <Link
+                    href={"/auth/signin"}
+                    className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                  >
+                    Track Player
+                  </Link>
+                </Button>
+              )}
+              {/* {sessionDetails?.isScouter && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="icon" variant="outline" className="h-8 w-8">
+                      <MoreVertical className="h-3.5 w-3.5" />
+                      <span className="sr-only">More</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )} */}
             </div>
           </CardHeader>
           <CardContent className="p-6 text-sm">
@@ -314,7 +368,7 @@ export default async function Page({ params: { player_id } }) {
               <ul className="grid gap-3">
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">Birth Date</span>
-                  <span>{player?.dob.toDateString()}</span>
+                  <span>{player?.dob?.toDateString()}</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-muted-foreground">Height</span>

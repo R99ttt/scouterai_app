@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, StarIcon, StarOff } from "lucide-react";
 import Link from "next/link";
 import {
   Pagination,
@@ -18,18 +18,21 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getSessionDetails } from "../lib/session";
+import prisma from "@/app/lib/prisma";
 
 async function getPlayers(
   page_id,
   player_name,
   player_age,
   player_club_position,
-  player_club_name
+  player_club_name,
+  is_starred,
+  user_id
 ) {
   try {
     const [players, totalCount] = await prisma.$transaction([
@@ -57,10 +60,19 @@ async function getPlayers(
               },
             },
           },
+          users:
+            is_starred == "true"
+              ? {
+                  some: {
+                    userId: parseInt(user_id),
+                  },
+                }
+              : undefined, // Filter by user's starred players if is_starred == "false" is true
         },
         select: {
           id: true,
           short_name: true,
+          long_name: true,
           player_iterations: {
             orderBy: {
               player_attributes: {
@@ -96,13 +108,37 @@ async function getPlayers(
           long_name: {
             contains: player_name,
           },
+          player_iterations: {
+            some: {
+              club_position: {
+                contains: player_club_position,
+              },
+              club: {
+                name: {
+                  contains: player_club_name,
+                },
+              },
+              player_attributes: {
+                age: {
+                  equals: player_age ? parseInt(player_age) : undefined,
+                },
+              },
+            },
+          },
+          users:
+            is_starred == "true"
+              ? {
+                  some: {
+                    userId: parseInt(user_id),
+                  },
+                }
+              : undefined, // Filter by user's starred players if is_starred == "false" is true
         },
       }),
     ]);
     return { players, totalCount };
   } catch (error) {
     console.log("Error fetching players:", error);
-    // throw error; // Re-throw the error for handling by the caller
     return { players: [], totalCount: 0 };
   }
 }
@@ -114,14 +150,19 @@ export default async function Page({
     player_age,
     player_club_position,
     player_club_name,
+    is_starred,
   },
 }) {
+  const sessionDetails = await getSessionDetails();
+
   const { players, totalCount } = await getPlayers(
     page_id ? page_id : 0,
     player_name,
     player_age,
     player_club_position,
-    player_club_name
+    player_club_name,
+    is_starred,
+    sessionDetails?.userId
   );
 
   return (
@@ -132,15 +173,50 @@ export default async function Page({
             <CardTitle className="mb-2">Players</CardTitle>
             <CardDescription>Watch all the players</CardDescription>
           </div>
-          <Button size="sm" variant="outline" className="h-8 gap-1">
-            {/* <Truck className="h-3.5 w-3.5" /> */}
-            <Link
-              href={"/players/add"}
-              className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
-            >
-              Add Player
-            </Link>
-          </Button>
+          <>
+            {sessionDetails?.userId &&
+              (is_starred == "true" ? (
+                <Link
+                  href={
+                    "/players?page_id=" +
+                    page_id +
+                    "&player_name=" +
+                    (player_name ? player_name : "") +
+                    "&is_starred=false"
+                  }
+                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                >
+                  <Button size="sm" variant="outline" className="h-8 gap-1">
+                    <StarIcon className="h-4 w-4" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link
+                  href={
+                    "/players?page_id=" +
+                    page_id +
+                    "&player_name=" +
+                    (player_name ? player_name : "") +
+                    "&is_starred=true"
+                  }
+                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                >
+                  <Button size="sm" variant="outline" className="h-8 gap-1">
+                    <StarOff className="h-4 w-4" />
+                  </Button>
+                </Link>
+              ))}
+            {sessionDetails?.isScouter && (
+              <Button size="sm" variant="outline" className="h-8 gap-1">
+                <Link
+                  href={"/players/details"}
+                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                >
+                  Add Player
+                </Link>
+              </Button>
+            )}
+          </>
         </div>
       </CardHeader>
       <CardContent>
@@ -162,7 +238,7 @@ export default async function Page({
           </TableHeader>
           <TableBody>
             {players?.map((player) => {
-              return <TableRowClient key={player.id} {...player} />;
+              return <TableRowClient key={player?.id} {...player} />;
             })}
           </TableBody>
         </Table>
@@ -205,7 +281,9 @@ export default async function Page({
                       "/players?page_id=" +
                       (parseInt(page_id) + 1) +
                       "&player_name=" +
-                      player_name
+                      (player_name ? player_name : "") +
+                      "&is_starred=" +
+                      (is_starred ? is_starred : "")
                     }
                   >
                     <ChevronRight className="h-3.5 w-3.5" />
