@@ -184,7 +184,7 @@ export default async function Page({
                     (player_name ? player_name : "") +
                     "&is_starred=false"
                   }
-                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                  className="xl:not-sr-only xl:whitespace-nowrap"
                 >
                   <Button size="sm" variant="outline" className="h-8 gap-1">
                     <StarIcon className="h-4 w-4" />
@@ -199,7 +199,7 @@ export default async function Page({
                     (player_name ? player_name : "") +
                     "&is_starred=true"
                   }
-                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                  className="xl:not-sr-only xl:whitespace-nowrap"
                 >
                   <Button size="sm" variant="outline" className="h-8 gap-1">
                     <StarOff className="h-4 w-4" />
@@ -210,7 +210,7 @@ export default async function Page({
               <Button size="sm" variant="outline" className="h-8 gap-1">
                 <Link
                   href={"/players/details"}
-                  className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                  className="xl:not-sr-only xl:whitespace-nowrap"
                 >
                   Add Player
                 </Link>

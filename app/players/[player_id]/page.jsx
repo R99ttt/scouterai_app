@@ -103,7 +103,7 @@ export default async function Page({ params: { player_id } }) {
           <CardContent>
             <p className="text-xs text-muted-foreground">Machine overall</p>
             <div className="text-2xl font-bold">
-              {player.player_iterations[0]?.player_ratings.model_overall}
+              {player.player_iterations[0]?.player_ratings?.model_overall}
             </div>
             {player.player_iterations[0]?.player_ratings.overall && (
               <p className="text-xs text-muted-foreground">
@@ -117,18 +117,18 @@ export default async function Page({ params: { player_id } }) {
                 className={
                   "font-bold " +
                   (player.player_iterations[0]?.player_ratings
-                    .model_potential == "Great"
+                    ?.model_potential == "Great"
                     ? "text-green-600"
                     : player.player_iterations[0]?.player_ratings
-                        .model_potential == "Good"
+                        ?.model_potential == "Good"
                     ? "text-lime-300"
                     : player.player_iterations[0]?.player_ratings
-                        .model_potential == "Medium"
+                        ?.model_potential == "Medium"
                     ? "text-yellow-400"
                     : "text-orange-500")
                 }
               >
-                {player.player_iterations[0]?.player_ratings.model_potential}
+                {player.player_iterations[0]?.player_ratings?.model_potential}
               </span>
             </p>
           </CardContent>
@@ -313,7 +313,6 @@ export default async function Page({ params: { player_id } }) {
                   className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   {/* <Copy className="h-3 w-3" /> */}
-                  <span className="sr-only">Copy Order ID</span>
                 </Button>
               </CardTitle>
               <CardDescription>
@@ -330,7 +329,7 @@ export default async function Page({ params: { player_id } }) {
                 <Button size="sm" variant="outline" className="h-8 gap-1">
                   <Link
                     href={"/auth/signin"}
-                    className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap"
+                    className=""
                   >
                     Track Player
                   </Link>

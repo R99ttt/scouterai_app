@@ -340,7 +340,7 @@ export async function createPlayer(state, formData) {
     return { errors: { main: "An error occurred while creating the player." } };
   }
 
-  // redirect("/players/" + player.id);
+  redirect("/players/" + player.id);
 }
 
 export async function validatePlayerForm(formData) {
@@ -381,7 +381,7 @@ export async function validatePlayerForm(formData) {
   // Validate specific fields with additional rules
   const age = formData.get("age");
   if (age && (age < 15 || age > 50)) {
-    errors.age = "Age must be between 15 and 45";
+    errors.age = "Age must be between 15 and 50";
   }
 
   const nationJerseyNumber = formData.get("nation_jersey_number");

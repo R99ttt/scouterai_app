@@ -67,7 +67,7 @@ export default function AuthenticationPage() {
       </div>
       <div className="hidden bg-muted lg:block">
         <Image
-          src="/placeholder.svg"
+          src="/app-logo.png"
           alt="Image"
           width="1920"
           height="1080"

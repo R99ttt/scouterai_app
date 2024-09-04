@@ -21,7 +21,7 @@ export default function trackPlayerButton({ playerId, isFollowing }) {
       variant="outline"
       className="h-8 gap-1"
     >
-      <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+      <span className="xl:not-sr-only xl:whitespace-nowrap">
         {buttonClicked ? (
           <StarIcon className="h-4 w-4" />
         ) : (

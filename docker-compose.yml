@@ -11,7 +11,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: password
     volumes:
       - C:/Users/Gad/Desktop/scouting-project-db:/var/lib/mysql-files:/var/lib/mysql-files # Mount point for your CSV file
       - db-data:/var/lib/mysql # Persist MySQL data
